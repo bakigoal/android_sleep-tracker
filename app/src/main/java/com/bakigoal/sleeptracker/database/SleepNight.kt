@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class SleepNight(
 
     @PrimaryKey(autoGenerate = true)
-    var nightId: Int = 0,
+    var nightId: Long = 0L,
 
     @ColumnInfo(name = "start_time_milli")
     var startTimeMilli: Long = System.currentTimeMillis(),
