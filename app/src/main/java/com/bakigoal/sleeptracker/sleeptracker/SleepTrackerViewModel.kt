@@ -28,6 +28,12 @@ class SleepTrackerViewModel(
     private val _navigateToSleepQuality = MutableLiveData<SleepNight>()
     val navigateToSleepQuality: LiveData<SleepNight>
         get() = _navigateToSleepQuality
+    val startVisible: LiveData<Boolean>
+        get() = Transformations.map(tonight) { it == null }
+    val stopVisible: LiveData<Boolean>
+        get() = Transformations.map(startVisible) { !it }
+    val clearVisible: LiveData<Boolean>
+        get() = Transformations.map(nights) { it.isNotEmpty() }
 
     init {
         initTonight()
@@ -63,6 +69,7 @@ class SleepTrackerViewModel(
     fun onClearData() {
         uiScope.launch {
             clearData()
+            tonight.value = null
         }
     }
 
