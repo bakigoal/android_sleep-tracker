@@ -1,7 +1,6 @@
 package com.bakigoal.sleeptracker.sleeptracker.recyclerview
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,15 +9,17 @@ import com.bakigoal.sleeptracker.R
 import com.bakigoal.sleeptracker.convertDurationToString
 import com.bakigoal.sleeptracker.convertNumericQualityToString
 import com.bakigoal.sleeptracker.database.SleepNight
+import com.bakigoal.sleeptracker.databinding.ListItemSleepNightBinding
 
-class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val res = itemView.context.resources
+class ViewHolder private constructor(val binding: ListItemSleepNightBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
-    private val sleepLength: TextView = itemView.findViewById(R.id.sleep_length)
-    private val quality: TextView = itemView.findViewById(R.id.quality_string)
-    private val qualityImage: ImageView = itemView.findViewById(R.id.quality_image)
+    private val sleepLength: TextView = binding.sleepLength
+    private val quality: TextView = binding.qualityString
+    private val qualityImage: ImageView = binding.qualityImage
 
     fun bind(item: SleepNight) {
+        val res = binding.root.resources
         sleepLength.text = convertDurationToString(item.startTimeMilli, item.endTimeMilli, res)
         quality.text = convertNumericQualityToString(item.sleepQuality, res)
         qualityImage.setImageResource(getImage(item.sleepQuality))
@@ -37,8 +38,8 @@ class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(i
     companion object {
         fun from(parent: ViewGroup): ViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
-            val view = layoutInflater.inflate(R.layout.list_item_sleep_night, parent, false)
-            return ViewHolder(view)
+            val binding = ListItemSleepNightBinding.inflate(layoutInflater, parent, false)
+            return ViewHolder(binding)
         }
     }
 }
