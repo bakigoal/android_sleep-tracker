@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bakigoal.sleeptracker.R
@@ -48,20 +47,14 @@ class SleepTrackerFragment : Fragment() {
     private fun observeViewModel(viewModel: SleepTrackerViewModel) {
         viewModel.navigateToSleepQuality.observe(viewLifecycleOwner, {
             it?.let {
-                val toQuality = SleepTrackerFragmentDirections
-                    .actionSleepTrackerFragmentToSleepQualityFragment(it.nightId)
-                findNavController().navigate(toQuality)
+                navigateToQuality(it.nightId)
                 viewModel.doneNavigating()
             }
         })
 
         viewModel.showOnSnackbarEvent.observe(viewLifecycleOwner, {
             if (it == true) {
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.cleared_message),
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                showSnackbar(getString(R.string.cleared_message))
                 viewModel.doneShowingSnackbar()
             }
         })
@@ -69,6 +62,20 @@ class SleepTrackerFragment : Fragment() {
         viewModel.nights.observe(viewLifecycleOwner, {
             it?.let { sleepNightAdapter.data = it }
         })
+    }
+
+    private fun navigateToQuality(nightId: Long) {
+        val toQuality = SleepTrackerFragmentDirections
+            .actionSleepTrackerFragmentToSleepQualityFragment(nightId)
+        findNavController().navigate(toQuality)
+    }
+
+    private fun showSnackbar(message: String) {
+        Snackbar.make(
+            requireActivity().findViewById(android.R.id.content),
+            message,
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     private fun sleepTrackerViewModel(): SleepTrackerViewModel {
