@@ -30,7 +30,7 @@ private val ONE_HOUR_MILLIS = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
  * @param endTimeMilli the end of the interval
  * @param res resources used to load formatted strings
  */
-fun convertDurationToFormatted(startTimeMilli: Long, endTimeMilli: Long, res: Resources): String {
+fun convertDurationToString(startTimeMilli: Long, endTimeMilli: Long, res: Resources): String {
     val durationMilli = endTimeMilli - startTimeMilli
     val weekdayString = SimpleDateFormat("EEEE", Locale.getDefault()).format(startTimeMilli)
     return when {
