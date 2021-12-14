@@ -13,6 +13,7 @@ import com.bakigoal.sleeptracker.R
 import com.bakigoal.sleeptracker.database.SleepDatabase
 import com.bakigoal.sleeptracker.databinding.FragmentSleepTrackerBinding
 import com.bakigoal.sleeptracker.sleeptracker.recyclerview.SleepNightAdapter
+import com.bakigoal.sleeptracker.sleeptracker.recyclerview.SleepNightListener
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -40,7 +41,7 @@ class SleepTrackerFragment : Fragment() {
         binding.sleepList.layoutManager = gridLayoutManager
 
         // Create and bind Adapter
-        sleepNightAdapter = SleepNightAdapter()
+        sleepNightAdapter = SleepNightAdapter(SleepNightListener { showSnackbar("$it was clicked") })
         binding.sleepList.adapter = sleepNightAdapter
 
         // add Observers to ViewModel

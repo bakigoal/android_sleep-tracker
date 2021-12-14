@@ -9,8 +9,9 @@ import com.bakigoal.sleeptracker.databinding.ListItemSleepNightBinding
 class SleepNightViewHolder private constructor(val binding: ListItemSleepNightBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: SleepNight) {
+    fun bind(item: SleepNight, clickListener: SleepNightListener) {
         binding.sleep = item
+        binding.clickListener = clickListener
         binding.executePendingBindings()
     }
 
