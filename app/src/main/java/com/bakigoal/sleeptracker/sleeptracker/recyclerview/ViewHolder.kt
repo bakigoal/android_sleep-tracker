@@ -2,8 +2,6 @@ package com.bakigoal.sleeptracker.sleeptracker.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bakigoal.sleeptracker.R
 import com.bakigoal.sleeptracker.convertDurationToString
@@ -14,15 +12,11 @@ import com.bakigoal.sleeptracker.databinding.ListItemSleepNightBinding
 class ViewHolder private constructor(val binding: ListItemSleepNightBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    private val sleepLength: TextView = binding.sleepLength
-    private val quality: TextView = binding.qualityString
-    private val qualityImage: ImageView = binding.qualityImage
-
     fun bind(item: SleepNight) {
         val res = binding.root.resources
-        sleepLength.text = convertDurationToString(item.startTimeMilli, item.endTimeMilli, res)
-        quality.text = convertNumericQualityToString(item.sleepQuality, res)
-        qualityImage.setImageResource(getImage(item.sleepQuality))
+        binding.sleepLength.text = convertDurationToString(item.startTimeMilli, item.endTimeMilli, res)
+        binding.qualityString.text = convertNumericQualityToString(item.sleepQuality, res)
+        binding.qualityImage.setImageResource(getImage(item.sleepQuality))
     }
 
     private fun getImage(sleepQuality: Int) = when (sleepQuality) {
