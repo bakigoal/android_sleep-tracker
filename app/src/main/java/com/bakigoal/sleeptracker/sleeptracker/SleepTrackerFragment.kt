@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bakigoal.sleeptracker.R
@@ -20,7 +21,7 @@ import com.google.android.material.snackbar.Snackbar
  */
 class SleepTrackerFragment : Fragment() {
 
-    private lateinit var viewModel: SleepTrackerViewModel
+    private lateinit var sleepNightAdapter: SleepNightAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, s: Bundle?): View? {
 
@@ -29,16 +30,18 @@ class SleepTrackerFragment : Fragment() {
             inflater, R.layout.fragment_sleep_tracker, container, false
         )
 
-        viewModel = sleepTrackerViewModel()
-        binding.sleepTrackerViewModel = viewModel
+        val sleepTrackerViewModel = sleepTrackerViewModel()
+        binding.sleepTrackerViewModel = sleepTrackerViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        observeViewModel(sleepTrackerViewModel)
 
-        observeViewModel()
+        sleepNightAdapter = SleepNightAdapter()
+        binding.sleepList.adapter = sleepNightAdapter
 
         return binding.root
     }
 
-    private fun observeViewModel() {
+    private fun observeViewModel(viewModel: SleepTrackerViewModel) {
         viewModel.navigateToSleepQuality.observe(viewLifecycleOwner, {
             it?.let {
                 val toQuality = SleepTrackerFragmentDirections
@@ -57,6 +60,10 @@ class SleepTrackerFragment : Fragment() {
                 ).show()
                 viewModel.doneShowingSnackbar()
             }
+        })
+
+        viewModel.nights.observe(viewLifecycleOwner, {
+            it?.let { sleepNightAdapter.data = it }
         })
     }
 
