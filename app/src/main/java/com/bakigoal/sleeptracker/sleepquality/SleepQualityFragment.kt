@@ -12,7 +12,6 @@ import androidx.navigation.fragment.navArgs
 import com.bakigoal.sleeptracker.R
 import com.bakigoal.sleeptracker.database.SleepDatabase
 import com.bakigoal.sleeptracker.databinding.FragmentSleepQualityBinding
-import com.bakigoal.sleeptracker.sleeptracker.SleepTrackerViewModelFactory
 
 /**
  * Fragment that displays a list of clickable icons,
@@ -21,6 +20,8 @@ import com.bakigoal.sleeptracker.sleeptracker.SleepTrackerViewModelFactory
  * and the database is updated.
  */
 class SleepQualityFragment : Fragment() {
+
+    private lateinit var viewModel: SleepQualityViewModel
 
     /**
      * Called when the Fragment is ready to display content to the screen.
@@ -36,21 +37,28 @@ class SleepQualityFragment : Fragment() {
 
         val args by navArgs<SleepQualityFragmentArgs>()
 
-        val application = requireActivity().application
-        val dao = SleepDatabase.getInstance(application).sleepDatabaseDao
-        val viewModelFactory = SleepQualityViewModelFactory(args.sleepNightKey, dao)
-        val viewModel = ViewModelProvider(this, viewModelFactory)[SleepQualityViewModel::class.java]
-
+        viewModel = sleepQualityViewModel(args.sleepNightKey)
         binding.sleepQualityViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        observeViewModel()
+
+        return binding.root
+    }
+
+    private fun observeViewModel() {
         viewModel.navigateToSleepTracker.observe(viewLifecycleOwner, {
             if (it == true) {
                 findNavController().navigate(SleepQualityFragmentDirections.actionSleepQualityFragmentToSleepTrackerFragment())
                 viewModel.doneNavigating()
             }
         })
+    }
 
-        return binding.root
+    private fun sleepQualityViewModel(sleepNightKey: Long): SleepQualityViewModel {
+        val application = requireActivity().application
+        val dao = SleepDatabase.getInstance(application).sleepDatabaseDao
+        val viewModelFactory = SleepQualityViewModelFactory(sleepNightKey, dao)
+        return ViewModelProvider(this, viewModelFactory)[SleepQualityViewModel::class.java]
     }
 }

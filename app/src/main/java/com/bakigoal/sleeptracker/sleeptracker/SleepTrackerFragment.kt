@@ -20,6 +20,8 @@ import com.google.android.material.snackbar.Snackbar
  */
 class SleepTrackerFragment : Fragment() {
 
+    private lateinit var viewModel: SleepTrackerViewModel
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, s: Bundle?): View? {
 
         // Get a reference to the binding object and inflate the fragment views.
@@ -27,16 +29,16 @@ class SleepTrackerFragment : Fragment() {
             inflater, R.layout.fragment_sleep_tracker, container, false
         )
 
-        val application = requireActivity().application
-        val dao = SleepDatabase.getInstance(application).sleepDatabaseDao
-        val viewModelFactory = SleepTrackerViewModelFactory(dao, application)
-
-        val viewModel =
-            ViewModelProvider(this, viewModelFactory)[SleepTrackerViewModel::class.java]
-
+        viewModel = sleepTrackerViewModel()
         binding.sleepTrackerViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        observeViewModel()
+
+        return binding.root
+    }
+
+    private fun observeViewModel() {
         viewModel.navigateToSleepQuality.observe(viewLifecycleOwner, {
             it?.let {
                 val toQuality = SleepTrackerFragmentDirections
@@ -56,7 +58,12 @@ class SleepTrackerFragment : Fragment() {
                 viewModel.doneShowingSnackbar()
             }
         })
+    }
 
-        return binding.root
+    private fun sleepTrackerViewModel(): SleepTrackerViewModel {
+        val application = requireActivity().application
+        val dao = SleepDatabase.getInstance(application).sleepDatabaseDao
+        val viewModelFactory = SleepTrackerViewModelFactory(dao, application)
+        return ViewModelProvider(this, viewModelFactory)[SleepTrackerViewModel::class.java]
     }
 }
