@@ -1,4 +1,5 @@
 package com.bakigoal.sleeptracker.sleepdetail
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,55 +7,24 @@ import androidx.lifecycle.ViewModel
 import com.bakigoal.sleeptracker.database.SleepDatabaseDao
 import com.bakigoal.sleeptracker.database.SleepNight
 
-/**
- * ViewModel for SleepQualityFragment.
- *
- * @param sleepNightKey The key of the current night we are working on.
- */
 class SleepDetailViewModel(
-    private val sleepNightKey: Long = 0L,
-    dataSource: SleepDatabaseDao
+    sleepNightKey: Long = 0L,
+    val database: SleepDatabaseDao
 ) : ViewModel() {
 
-    /**
-     * Hold a reference to SleepDatabase via its SleepDatabaseDao.
-     */
-    val database = dataSource
-
-
-    /**
-     */
-
-    private val night = MediatorLiveData<SleepNight>()
-
-    fun getNight() = night
-
-    init {
-        night.addSource(database.getNightWithId(sleepNightKey), night::setValue)
-    }
-
-    /**
-     * Variable that tells the fragment whether it should navigate to [SleepTrackerFragment].
-     *
-     * This is `private` because we don't want to expose the ability to set [MutableLiveData] to
-     * the [Fragment]
-     */
+    private val _night = MediatorLiveData<SleepNight>()
     private val _navigateToSleepTracker = MutableLiveData<Boolean?>()
 
-    /**
-     * When true immediately navigate back to the [SleepTrackerFragment]
-     */
+    val night: LiveData<SleepNight>
+        get() = _night
     val navigateToSleepTracker: LiveData<Boolean?>
         get() = _navigateToSleepTracker
 
-    /**
-     *
-     */
 
+    init {
+        _night.addSource(database.getNightWithId(sleepNightKey), _night::setValue)
+    }
 
-    /**
-     * Call this immediately after navigating to [SleepTrackerFragment]
-     */
     fun doneNavigating() {
         _navigateToSleepTracker.value = null
     }
@@ -62,5 +32,4 @@ class SleepDetailViewModel(
     fun onClose() {
         _navigateToSleepTracker.value = true
     }
-
 }

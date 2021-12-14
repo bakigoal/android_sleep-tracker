@@ -41,7 +41,9 @@ class SleepTrackerFragment : Fragment() {
         binding.sleepList.layoutManager = gridLayoutManager
 
         // Create and bind Adapter
-        sleepNightAdapter = SleepNightAdapter(SleepNightListener { showSnackbar("$it was clicked") })
+        sleepNightAdapter = SleepNightAdapter(SleepNightListener {
+            nightId -> sleepTrackerViewModel.onSleepNightClicked(nightId)
+        })
         binding.sleepList.adapter = sleepNightAdapter
 
         // add Observers to ViewModel
@@ -54,17 +56,21 @@ class SleepTrackerFragment : Fragment() {
         viewModel.navigateToSleepQuality.observe(viewLifecycleOwner, {
             it?.let {
                 navigateToQuality(it.nightId)
-                viewModel.doneNavigating()
+                viewModel.doneNavigatingToSleepQuality()
             }
         })
-
+        viewModel.navigateToSleepDetail.observe(viewLifecycleOwner, {
+            it?.let {
+                navigateToDetail(it)
+                viewModel.doneNavigatingToSleepDetail()
+            }
+        })
         viewModel.showOnSnackbarEvent.observe(viewLifecycleOwner, {
             if (it == true) {
                 showSnackbar(getString(R.string.cleared_message))
                 viewModel.doneShowingSnackbar()
             }
         })
-
         viewModel.nights.observe(viewLifecycleOwner, {
             it?.let { sleepNightAdapter.submitList(it) }
         })
@@ -74,6 +80,12 @@ class SleepTrackerFragment : Fragment() {
         val toQuality = SleepTrackerFragmentDirections
             .actionSleepTrackerFragmentToSleepQualityFragment(nightId)
         findNavController().navigate(toQuality)
+    }
+
+    private fun navigateToDetail(nightId: Long) {
+        val toDetail =
+            SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepDetailFragment(nightId)
+        findNavController().navigate(toDetail)
     }
 
     private fun showSnackbar(message: String) {
