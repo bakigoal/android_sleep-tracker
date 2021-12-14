@@ -37,19 +37,30 @@ class SleepTrackerFragment : Fragment() {
         binding.sleepTrackerViewModel = sleepTrackerViewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val gridLayoutManager = GridLayoutManager(requireActivity(), 3)
-        binding.sleepList.layoutManager = gridLayoutManager
-
         // Create and bind Adapter
-        sleepNightAdapter = SleepNightAdapter(SleepNightListener {
-            nightId -> sleepTrackerViewModel.onSleepNightClicked(nightId)
+        sleepNightAdapter = SleepNightAdapter(SleepNightListener { nightId ->
+            sleepTrackerViewModel.onSleepNightClicked(nightId)
         })
+        binding.sleepList.layoutManager = gridLayoutManager()
         binding.sleepList.adapter = sleepNightAdapter
 
         // add Observers to ViewModel
         observeViewModel(sleepTrackerViewModel)
 
         return binding.root
+    }
+
+    private fun gridLayoutManager(): GridLayoutManager {
+        val gridLayoutManager = GridLayoutManager(requireActivity(), 3)
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when (position) {
+                    0 -> 3
+                    else -> 1
+                }
+            }
+        }
+        return gridLayoutManager
     }
 
     private fun observeViewModel(viewModel: SleepTrackerViewModel) {
