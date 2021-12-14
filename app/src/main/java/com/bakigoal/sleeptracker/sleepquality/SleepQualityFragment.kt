@@ -35,7 +35,7 @@ class SleepQualityFragment : Fragment() {
             inflater, R.layout.fragment_sleep_quality, container, false
         )
 
-        val args by navArgs<SleepQualityFragmentArgs>()
+        val args: SleepQualityFragmentArgs by navArgs()
 
         viewModel = sleepQualityViewModel(args.sleepNightKey)
         binding.sleepQualityViewModel = viewModel
