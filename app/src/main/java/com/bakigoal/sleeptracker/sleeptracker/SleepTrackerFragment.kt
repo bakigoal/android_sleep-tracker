@@ -30,13 +30,17 @@ class SleepTrackerFragment : Fragment() {
             inflater, R.layout.fragment_sleep_tracker, container, false
         )
 
+        // Create and bind ViewModel
         val sleepTrackerViewModel = sleepTrackerViewModel()
         binding.sleepTrackerViewModel = sleepTrackerViewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        observeViewModel(sleepTrackerViewModel)
 
+        // Create and bind Adapter
         sleepNightAdapter = SleepNightAdapter()
         binding.sleepList.adapter = sleepNightAdapter
+
+        // add Observers to ViewModel
+        observeViewModel(sleepTrackerViewModel)
 
         return binding.root
     }

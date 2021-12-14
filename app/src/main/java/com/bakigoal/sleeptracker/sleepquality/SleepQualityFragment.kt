@@ -21,8 +21,6 @@ import com.bakigoal.sleeptracker.databinding.FragmentSleepQualityBinding
  */
 class SleepQualityFragment : Fragment() {
 
-    private lateinit var viewModel: SleepQualityViewModel
-
     /**
      * Called when the Fragment is ready to display content to the screen.
      *
@@ -37,16 +35,18 @@ class SleepQualityFragment : Fragment() {
 
         val args: SleepQualityFragmentArgs by navArgs()
 
-        viewModel = sleepQualityViewModel(args.sleepNightKey)
+        // Create and bind ViewModel
+        val viewModel = sleepQualityViewModel(args.sleepNightKey)
         binding.sleepQualityViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        observeViewModel()
+        // add Observers to ViewModel
+        observeViewModel(viewModel)
 
         return binding.root
     }
 
-    private fun observeViewModel() {
+    private fun observeViewModel(viewModel: SleepQualityViewModel) {
         viewModel.navigateToSleepTracker.observe(viewLifecycleOwner, {
             if (it == true) {
                 findNavController().navigate(SleepQualityFragmentDirections.actionSleepQualityFragmentToSleepTrackerFragment())
