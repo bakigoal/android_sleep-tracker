@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.bakigoal.sleeptracker.R
 import com.bakigoal.sleeptracker.database.SleepDatabase
 import com.bakigoal.sleeptracker.databinding.FragmentSleepTrackerBinding
+import com.bakigoal.sleeptracker.sleeptracker.recyclerview.SleepNightAdapter
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -60,7 +61,7 @@ class SleepTrackerFragment : Fragment() {
         })
 
         viewModel.nights.observe(viewLifecycleOwner, {
-            it?.let { sleepNightAdapter.data = it }
+            it?.let { sleepNightAdapter.submitList(it) }
         })
     }
 

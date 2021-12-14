@@ -1,4 +1,4 @@
-package com.bakigoal.sleeptracker.sleeptracker
+package com.bakigoal.sleeptracker.sleeptracker.recyclerview
 
 import android.view.LayoutInflater
 import android.view.View
