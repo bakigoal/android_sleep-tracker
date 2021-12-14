@@ -1,10 +1,11 @@
-package com.bakigoal.sleeptracker.sleeptracker.recyclerview
+package com.bakigoal.sleeptracker.sleeptracker.recyclerview.viewholders
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bakigoal.sleeptracker.database.SleepNight
 import com.bakigoal.sleeptracker.databinding.ListItemSleepNightBinding
+import com.bakigoal.sleeptracker.sleeptracker.recyclerview.util.SleepNightListener
 
 class SleepNightViewHolder private constructor(val binding: ListItemSleepNightBinding) :
     RecyclerView.ViewHolder(binding.root) {

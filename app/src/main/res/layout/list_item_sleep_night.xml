@@ -11,7 +11,7 @@
 
         <variable
             name="clickListener"
-            type="com.bakigoal.sleeptracker.sleeptracker.recyclerview.SleepNightListener" />
+            type="com.bakigoal.sleeptracker.sleeptracker.recyclerview.util.SleepNightListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

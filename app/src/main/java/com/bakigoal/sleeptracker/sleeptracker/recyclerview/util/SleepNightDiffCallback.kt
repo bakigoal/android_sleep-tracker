@@ -1,7 +1,7 @@
-package com.bakigoal.sleeptracker.sleeptracker.recyclerview
+package com.bakigoal.sleeptracker.sleeptracker.recyclerview.util
 
 import androidx.recyclerview.widget.DiffUtil
-import com.bakigoal.sleeptracker.database.SleepNight
+import com.bakigoal.sleeptracker.sleeptracker.recyclerview.DataItem
 
 class SleepNightDiffCallback : DiffUtil.ItemCallback<DataItem>() {
 

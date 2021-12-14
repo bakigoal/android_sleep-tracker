@@ -13,7 +13,7 @@ import com.bakigoal.sleeptracker.R
 import com.bakigoal.sleeptracker.database.SleepDatabase
 import com.bakigoal.sleeptracker.databinding.FragmentSleepTrackerBinding
 import com.bakigoal.sleeptracker.sleeptracker.recyclerview.SleepNightAdapter
-import com.bakigoal.sleeptracker.sleeptracker.recyclerview.SleepNightListener
+import com.bakigoal.sleeptracker.sleeptracker.recyclerview.util.SleepNightListener
 import com.google.android.material.snackbar.Snackbar
 
 /**

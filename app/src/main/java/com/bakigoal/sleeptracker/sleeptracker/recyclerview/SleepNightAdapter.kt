@@ -4,6 +4,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bakigoal.sleeptracker.database.SleepNight
+import com.bakigoal.sleeptracker.sleeptracker.recyclerview.util.SleepNightDiffCallback
+import com.bakigoal.sleeptracker.sleeptracker.recyclerview.util.SleepNightListener
+import com.bakigoal.sleeptracker.sleeptracker.recyclerview.viewholders.SleepNightViewHolder
+import com.bakigoal.sleeptracker.sleeptracker.recyclerview.viewholders.HeaderViewHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +23,7 @@ class SleepNightAdapter(private val clickListener: SleepNightListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ITEM_VIEW_TYPE_HEADER -> TextViewHolder.from(parent)
+            ITEM_VIEW_TYPE_HEADER -> HeaderViewHolder.from(parent)
             ITEM_VIEW_TYPE_ITEM -> SleepNightViewHolder.from(parent)
             else -> throw ClassCastException("Unknown viewType $viewType")
         }
@@ -53,4 +57,17 @@ class SleepNightAdapter(private val clickListener: SleepNightListener) :
         }
 
     }
+}
+
+sealed class DataItem {
+
+    data class SleepNightItem(val sleepNight: SleepNight) : DataItem() {
+        override val id = sleepNight.nightId
+    }
+
+    object Header : DataItem() {
+        override val id = Long.MIN_VALUE
+    }
+
+    abstract val id: Long
 }
