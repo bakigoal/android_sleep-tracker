@@ -17,7 +17,7 @@ private const val ITEM_VIEW_TYPE_HEADER = 0
 private const val ITEM_VIEW_TYPE_ITEM = 1
 
 class SleepNightAdapter(private val clickListener: SleepNightListener) :
-    ListAdapter<DataItem, RecyclerView.ViewHolder>(SleepNightDiffCallback()) {
+    ListAdapter<SleepNightAdapter.DataItem, RecyclerView.ViewHolder>(SleepNightDiffCallback()) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
@@ -57,17 +57,17 @@ class SleepNightAdapter(private val clickListener: SleepNightListener) :
         }
 
     }
-}
 
-sealed class DataItem {
+    sealed class DataItem {
 
-    data class SleepNightItem(val sleepNight: SleepNight) : DataItem() {
-        override val id = sleepNight.nightId
+        data class SleepNightItem(val sleepNight: SleepNight) : DataItem() {
+            override val id = sleepNight.nightId
+        }
+
+        object Header : DataItem() {
+            override val id = Long.MIN_VALUE
+        }
+
+        abstract val id: Long
     }
-
-    object Header : DataItem() {
-        override val id = Long.MIN_VALUE
-    }
-
-    abstract val id: Long
 }
